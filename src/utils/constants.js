@@ -20,3 +20,7 @@ export const API_OPTIONS = {
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkN2Y5YmRjOTg3YWY4YTY5NTEzNGEwOTJiOTkwYzMxOCIsIm5iZiI6MTc0MDQ4MzI0MS40OTQwMDAyLCJzdWIiOiI2N2JkYWFhOTk2MTMxZjBmZWM1ZTk3YzIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.zapGoWgz5nLl8PkETFm-ZWz-W62rF45iex-NA513k0w",
   },
 };
+
+export const IMG_URL = "https://image.tmdb.org/t/p/w200/";
+
+export const OpenApiKey = process.env.REACT_APP_OpenApiKey;

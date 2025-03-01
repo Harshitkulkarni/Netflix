@@ -1,21 +1,18 @@
-import React, { useState } from "react";
-
-import { useRef } from "react";
+import React, { useState, useRef } from "react";
 import { checkValidData } from "../utils/vilidate";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { updateProfile } from "firebase/auth";
 import { addUser } from "../utils/userSlice";
 import { useDispatch } from "react-redux";
-import { USER_AVATAR } from "../utils/constants";
 import InsideHeadder from "./InsideHeadder";
 
 const Login = () => {
-  const [isSignInForm, SetisSignInFrom] = useState(true);
-  const [errorMessege, setErrorMessage] = useState();
+  const [isSignInForm, setIsSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -24,18 +21,15 @@ const Login = () => {
   const password = useRef(null);
 
   const handleClick = () => {
-    //vidate the form
+    // Validate the form
+    const message = checkValidData(email.current.value, password.current.value);
+    setErrorMessage(message);
 
-    const Messege = checkValidData(email.current.value, password.current.value);
-    setErrorMessage(Messege);
-
-    // sign In / sign Up
-    if (Messege) return;
+    // Sign In / Sign Up
+    if (message) return;
 
     if (!isSignInForm) {
-      // if the user is not sign in
-      // then sign up and this is the sign up logic
-
+      // Sign Up logic
       createUserWithEmailAndPassword(
         auth,
         email.current.value,
@@ -44,35 +38,27 @@ const Login = () => {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
-          //console.log(user);
-          updateProfile(auth, {
+          updateProfile(user, {
             displayName: name.current.value,
-            //photoURL: "https://example.com/jane-q-user/profile.jpg",
           })
             .then(() => {
               // Profile updated!
-              // ...
               const { uid, email, displayName } = auth.currentUser;
               dispatch(
                 addUser({ uid: uid, email: email, displayName: displayName })
               );
             })
             .catch((error) => {
-              // An error occurred
-              // ...
               setErrorMessage("Unable to update name");
             });
-
-          //console.log(user);
-          // ...
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           setErrorMessage(errorCode + " - " + errorMessage);
-          // ..
         });
     } else {
+      // Sign In logic
       signInWithEmailAndPassword(
         auth,
         email.current.value,
@@ -81,9 +67,6 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-
-          //console.log(user);
-          // ...
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -93,9 +76,10 @@ const Login = () => {
     }
   };
 
-  const handleTogleSignIn = () => {
-    SetisSignInFrom(!isSignInForm);
+  const handleToggleSignIn = () => {
+    setIsSignInForm(!isSignInForm);
   };
+
   return (
     <div>
       <div className="absolute">
@@ -107,9 +91,9 @@ const Login = () => {
       </div>
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="absolute max-w-md my p-12 bg-black my-36 mx-auto right-0 left-0 bg-opacity-80"
+        className="absolute max-w-md p-12 bg-black my-36 mx-auto right-0 left-0 bg-opacity-80"
       >
-        <h1 className="font-bold text-3xl py-4  text-white">
+        <h1 className="font-bold text-3xl py-4 text-white">
           {isSignInForm ? "Sign In" : "Sign Up"}
         </h1>
         {!isSignInForm && (
@@ -123,16 +107,16 @@ const Login = () => {
         <input
           ref={email}
           type="text"
-          placeholder="email"
+          placeholder="Email"
           className="p-4 my-4 w-full bg-transparent text-white border-2 border-gray-700"
         />
         <input
           ref={password}
           type="password"
-          placeholder="password"
-          className="p-4 my-4 w-full bg-transparent border-2 text-white border-gray-700"
+          placeholder="Password"
+          className="p-4 my-4 w-full bg-transparent text-white border-2 border-gray-700"
         />
-        <p className="text-red-500 text-lg">{errorMessege}</p>
+        <p className="text-red-500 text-lg">{errorMessage}</p>
         <button
           onClick={handleClick}
           className="p-4 my-6 bg-red-500 text-white w-full"
@@ -140,13 +124,13 @@ const Login = () => {
           {isSignInForm ? "Sign In" : "Sign Up"}
         </button>
         <p className="text-white">
-          {isSignInForm ? "New to Netflix?" : "Exsisting User!.."}
+          {isSignInForm ? "New to Netflix?" : "Existing User?"}
         </p>
         <p
           className="text-white cursor-pointer hover:underline font-bold text-lg"
-          onClick={handleTogleSignIn}
+          onClick={handleToggleSignIn}
         >
-          {isSignInForm ? " Sign Up" : "Sign In"}
+          {isSignInForm ? "Sign Up" : "Sign In"}
         </p>
       </form>
     </div>

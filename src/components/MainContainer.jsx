@@ -11,7 +11,7 @@ const MainContainer = () => {
 
   const { original_title, id, overview } = myDisplayToPageMovie;
   return (
-    <div className="">
+    <div className="m-0 p-0">
       <VideoTitle title={original_title} description={overview} id={id} />
       <VideoBackground id={id} />
     </div>
