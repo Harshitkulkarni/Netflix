@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { API_OPTIONS } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addTrailers } from "../utils/moviesData";
+import { addTrailers, addMoviesVideos } from "../utils/moviesData";
 
 const useVideoBackgroundTrailer = (id) => {
   //this fetching the trailer and updating to the store
@@ -16,6 +16,7 @@ const useVideoBackgroundTrailer = (id) => {
     //console.log(json);
     const trailer = json.results.filter((video) => video.type == "Trailer");
     dispatch(addTrailers(trailer));
+    dispatch(addMoviesVideos(json.results));
   };
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import TvProgram from "./TvProgram";
 import Films from "./Films";
 import Search from "./Search";
+import WatchPage from "./WatchPage";
 
 const Body = () => {
   const appRouter = createBrowserRouter([
@@ -27,6 +28,10 @@ const Body = () => {
     {
       element: <Search />,
       path: "/search",
+    },
+    {
+      element: <WatchPage />,
+      path: "/watch/:movieId",
     },
   ]);
 

@@ -24,3 +24,5 @@ export const API_OPTIONS = {
 export const IMG_URL = "https://image.tmdb.org/t/p/w200/";
 
 export const OpenApiKey = process.env.REACT_APP_OpenApiKey;
+
+export const FirebaseKey = process.env.FIREBASE_API_KEY;
