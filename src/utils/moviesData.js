@@ -10,6 +10,7 @@ const moviesData = createSlice({
     fetchedMovies: [],
     moviesName: [],
     moviesVideos: null,
+    isLoading: false,
   },
   reducers: {
     addnowPlayingMovies: (state, action) => {
@@ -28,9 +29,13 @@ const moviesData = createSlice({
       const { moviesName, fetchedMovies } = action.payload;
       state.fetchedMovies = fetchedMovies;
       state.moviesName = moviesName;
+      state.isLoading = false;
     },
     addMoviesVideos: (state, action) => {
       state.moviesVideos = action.payload;
+    },
+    setLoading: (state, action) => {
+      state.isLoading = action.payload;
     },
   },
 });
@@ -42,5 +47,7 @@ export const {
   addTrendingMovies,
   addSearchedMovies,
   addMoviesVideos,
+  setLoading,
 } = moviesData.actions;
+
 export default moviesData.reducer;
